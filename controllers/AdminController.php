@@ -148,7 +148,6 @@ function uploadAction(){
 function ordersAction($smarty){
 
     $rsOrders = getOrders();
-
     $smarty->assign('rsOrders', $rsOrders);
     $smarty->assign('pageTitle', 'Заказы');
 

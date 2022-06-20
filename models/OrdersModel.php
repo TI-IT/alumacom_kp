@@ -107,3 +107,20 @@ function getOrders()
     }
     return $smartyRs;
 }
+
+/**
+ * Получить все продукты заказа
+ * @return void
+ */
+function getProductsForOrder($orderId)
+{
+    global $db;
+    $sql = "SELECT *
+            FROM purchase AS pe
+            LEFT JOIN products AS ps
+                ON pe.product_id = ps.id
+            WHERE (`order_id` = '{$orderId}')";
+
+    $rs = mysqli_query($db, $sql);
+    return createSmartyRsArray($rs);
+}
