@@ -108,7 +108,7 @@ function insertProduct($itemName, $itemPrice, $itemDesc, $itemCat, $image = 0)
     $rs = mysqli_query($db, $sql);
     return $rs;
 }
-
+//обновление продукта
 function updateProduct($itemId, $itemName, $itemPrice, $itemStatus, $itemDesc, $itemCat, $newFileName = null)
 {
     $set = array();
@@ -141,4 +141,23 @@ function updateProduct($itemId, $itemName, $itemPrice, $itemStatus, $itemDesc, $
 
     $rs = mysqli_query($db, $sql);
     return $rs;
+}
+
+function updateProductImage($itemId, $newFileName)
+{
+    $rs = updateProduct($itemId, null, null,
+        null, null, null, $newFileName);
+
+    return $rs;
+}
+
+function countProducts()
+{
+    global $db;
+    $sql = "SELECT `id`
+            FROM products ORDER BY id DESC";
+
+    $rs = mysqli_query($db, $sql);
+    $rsCount = createSmartyRsArray($rs);
+    return $rsCount;
 }

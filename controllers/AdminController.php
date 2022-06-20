@@ -14,6 +14,7 @@ $smarty->assign('templateAdminWebPath', TemplateAdminWebPath);
 //d($smarty);
 function indexAction($smarty){
 
+
     $rsCategories = getAllMainCategories();
 
 //    d($rsCategories);
@@ -94,6 +95,12 @@ function addproductAction(){
 
     resDataJsonEncode($res, $message0, $message1);
 }
+//Временное
+function addproductimageAction($smarty){
+    $rsProductsCount = countProducts()[0];
+    $smarty->assign('rsProductsCount', $rsProductsCount);
+    redirect('/admin/products/');
+}
 
 function updateproductAction(){
 
@@ -109,4 +116,45 @@ function updateproductAction(){
     $message1 = 'изменения успешно внесены';
 
     resDataJsonEncode($res, $message0, $message1);
+}
+
+function uploadAction(){
+    $maxSize = 2 * 1024 * 1024;
+
+    $itemId = $_POST['itemId'];
+    //Получаем расширение загружаемого файла
+    $ext = pathinfo($_FILES['filename']['name'], PATHINFO_EXTENSION);
+    //Создаем имя файла
+    $newFileName = $itemId . '.' . $ext;
+    if($_FILES["filename"]["size"] > $maxSize){
+        echo ("Размер файла превышает два мегабайта");
+        return;
+    }
+    //Загружен ли файл
+    if(is_uploaded_file($_FILES['filename']['tmp_name'])){
+        //Если файл загружен то перемещаем его из временной директории в конечную
+        $res = move_uploaded_file($_FILES['filename']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/images/products/' . $newFileName);
+        if($res){
+            $res = updateProductImage($itemId, $newFileName);
+            if($res){
+                redirect('/admin/products/');
+            }
+        }
+    }else{
+        echo("ошибка загрузки файла");
+    }
+}
+
+function ordersAction($smarty){
+
+    $rsOrders = getOrders();
+
+    $smarty->assign('rsOrders', $rsOrders);
+    $smarty->assign('pageTitle', 'Заказы');
+
+    loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminOrders');
+    loadTemplate($smarty, 'adminFooter');
+
+
 }

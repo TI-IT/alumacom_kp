@@ -1,4 +1,5 @@
 <h2>Товары</h2>
+<h2>{$rsProductsCount}</h2>
 
 <table border="1" cellpadding="1" cellspacing="1">
     <caption>добавить товар</caption>
@@ -7,7 +8,6 @@
         <th>Цена</th>
         <th>Категория</th>
         <th>Описание</th>
-        <th>Изображение</th>
         <th>Сохранить</th>
     </tr>
 
@@ -30,12 +30,7 @@
         <td>
             <textarea id="newItemDesc"></textarea>
         </td>
-        <td>
-            <form action="/admin/upload/" method="post" enctype="multipart/form-data">
-                <input type="file" name="filename"> <br>
-                <input type="hidden" name="itemId" value="{$item['id']}">
-            </form>
-        </td>
+
         <td>
             <input type="button" value="Сохранить" onclick="addProduct();" />
         </td>

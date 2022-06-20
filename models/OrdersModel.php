@@ -84,3 +84,26 @@ function getOrdersWithProductsByUser($userId)
    
    return $smartyRs;	
 }
+
+function getOrders()
+{
+    global $db;
+    $sql = "SELECT O.*, u.name, u.email, u.phone, u.adress
+            FROM orders AS `o`
+            LEFT JOIN users AS `u` ON o.user_id = u.id
+            ORDER BY id DESC";
+
+    $rs = mysqli_query($db, $sql);
+
+    $smartyRs = array();
+    while ($row = mysqli_fetch_assoc($rs)) {
+
+        $rsChildren = getPurchaseForOrder($row['id']);
+
+        if($rsChildren){
+            $row['children'] = $rsChildren;
+            $smartyRs[] = $row;
+        }
+    }
+    return $smartyRs;
+}
