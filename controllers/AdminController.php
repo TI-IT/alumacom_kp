@@ -30,16 +30,10 @@ function addnewcatAction(){
     $catParentId = $_POST['generalCatId'];
 
     $res = insertCat($catName, $catParentId);
-    if($res){
-        $resData['success'] = 1;
-        $resData['message'] = 'категория добавлена';
-    }else{
-        $resData['success'] = 0;
-        $resData['message'] = 'ощибка добавления категории';
-    }
+    $message0 = 'ощибка добавления категории';
+    $message1 = 'категория добавлена';
 
-    echo json_encode($resData);
-    return;
+    resDataJsonEncode($res, $message0, $message1);
 }
 
 /**
@@ -67,17 +61,10 @@ function updatecategoryAction(){
     $newName = $_POST['newName'];
 
     $res = updateCategoryData($itemId, $parentId, $newName);
+    $message0 = 'Ощибка изменения данных категории';
+    $message1 = 'Категория обнавлена';
 
-    if($res){
-        $resData['success'] = 1;
-        $resData['message'] = 'Категория обнавлена';
-    }else{
-        $resData['success'] = 0;
-        $resData['message'] = 'Ощибка изменения данных категории';
-    }
-
-    echo json_encode($resData);
-    return;
+    resDataJsonEncode($res, $message0, $message1);
 }
 
 function productsAction($smarty){
@@ -92,5 +79,34 @@ function productsAction($smarty){
     loadTemplate($smarty, 'adminHeader');
     loadTemplate($smarty, 'adminProducts');
     loadTemplate($smarty, 'adminFooter');
+}
 
+function addproductAction(){
+    $itemName = $_POST['itemName'];
+    $itemPrice = $_POST['itemPrice'];
+    $itemDesc = $_POST['itemDesc'];
+    $itemCat = $_POST['itemCatId'];
+    $image = $_POST['image'];
+
+    $res = insertProduct($itemName, $itemPrice, $itemDesc, $itemCat, $image);
+    $message0 = 'Ошибка Добавления данных';
+    $message1 = 'Добавление успешно внесены';
+
+    resDataJsonEncode($res, $message0, $message1);
+}
+
+function updateproductAction(){
+
+    $itemId = $_POST['itemId'];
+    $itemName = $_POST['itemName'];
+    $itemPrice = $_POST['itemPrice'];
+    $itemStatus = $_POST['itemStatus'];
+    $itemDesc = $_POST['itemDesc'];
+    $itemCat = $_POST['itemCatId'];
+
+    $res = updateProduct($itemId, $itemName, $itemPrice, $itemStatus, $itemDesc, $itemCat);
+    $message0 = 'Ошибка изменения данных';
+    $message1 = 'изменения успешно внесены';
+
+    resDataJsonEncode($res, $message0, $message1);
 }

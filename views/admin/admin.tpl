@@ -13,5 +13,5 @@
     <br />
     <input type="button" onclick="newCategory();" value="добавить категорию" />
 
-    <a href="https://www.youtube.com/watch?v=llaqoGp3yuM&list=PLoonZ8wII66iZSicLNXhE4bxUYaKhIc-L&index=67">Lesson</a>
+    <a href="https://www.youtube.com/watch?v=k8JaWoYCI4k&list=PLoonZ8wII66iZSicLNXhE4bxUYaKhIc-L&index=71">Lesson</a>
 </div>
