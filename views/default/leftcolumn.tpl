@@ -1,7 +1,8 @@
 	{* левый столбец *}
-
+	<form action="http://alumacom/admin/">
+		<button>Переход в Админку</button>
+	</form>
 <div id="leftColumn">
-
 
 <div id="leftMenu">
 	<div class="menuCaption">Меню:</div>

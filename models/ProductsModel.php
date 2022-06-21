@@ -151,13 +151,21 @@ function updateProductImage($itemId, $newFileName)
     return $rs;
 }
 
-function countProducts()
+function insertImportProducts($aProducts)
 {
     global $db;
-    $sql = "SELECT `id`
-            FROM products ORDER BY id DESC";
+    if(! is_array($aProducts)) return false;
+
+    $sql = "INSERT INTO products
+            (`name`, `category_id`, `description`, `price`, `status`)
+            VALUES
+            ";
+    $cnt = count($aProducts);
+    for($i = 0; $i < $cnt; $i++){
+        if($i > 0) $sql .= ', ';
+        $sql .= "('" . implode("', '" , $aProducts[$i]) . "')";
+    }
 
     $rs = mysqli_query($db, $sql);
-    $rsCount = createSmartyRsArray($rs);
-    return $rsCount;
+    return $rs;
 }

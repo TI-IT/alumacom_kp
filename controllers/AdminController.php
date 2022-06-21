@@ -11,10 +11,8 @@ include_once '../models/PurchaseModel.php';
 
 $smarty->setTemplateDir(TemplateAdminPrefix);
 $smarty->assign('templateAdminWebPath', TemplateAdminWebPath);
-//d($smarty);
+
 function indexAction($smarty){
-
-
     $rsCategories = getAllMainCategories();
 
 //    d($rsCategories);
@@ -154,6 +152,95 @@ function ordersAction($smarty){
     loadTemplate($smarty, 'adminHeader');
     loadTemplate($smarty, 'adminOrders');
     loadTemplate($smarty, 'adminFooter');
+}
 
+function setorderstatusAction(){
+    $itemId = $_POST['itemId'];
+    $status = $_POST['status'];
 
+    $res = updateOrderStatus($itemId, $status);
+    $message0 = 'Ошибка установки статуса';
+
+    resDataJsonEncode($res, $message0);
+}
+
+function setorderdatepaymentAction(){
+    $itemId = $_POST['itemId'];
+    $datePayment = $_POST['datePayment'];
+
+    $res = updateOrderDatePayment($itemId, $datePayment);
+    $message0 = 'Ошибка установки статуса';
+
+    resDataJsonEncode($res, $message0);
+}
+
+function createxmlAction(){
+    $rsProducts = getProducts();
+
+    $xml = new DOMDocument('1.0', 'utf-8');
+    $xmpProducts = $xml->appendChild($xml->createElement('products'));
+
+    foreach($rsProducts as $product){
+        $xmpProducts = $xmpProducts->appendChild($xml->createElement('product'));
+        foreach($product as $key => $val){
+            $xmlName = $xmpProducts->appendChild($xml->createElement($key));
+            $xmlName->appendChild($xml->createTextNode($val));
+        }
+    }
+
+    $xml->save($_SERVER["DOCUMENT_ROOT"] . '/xml/products.xml');
+    echo 'ok';
+}
+
+function uploadFile($localFilename, $localPath = '/upload/')
+{
+    $maxSize = 2 * 1024 * 1024;
+
+    //Получаем расширение загружаемого файла
+    $ext = pathinfo($_FILES['filename']['name'], PATHINFO_EXTENSION);
+
+    //Создаем имя файла
+    $pathInfo = pathinfo($localFilename);
+    if($ext != $pathInfo['extension'])return false;
+
+    $newFileName = $pathInfo['filename'] . '_' . time() . '.' . $pathInfo['extension'];
+
+    if ($_FILES["filename"]["size"] > $maxSize) {
+        return false;
+    }
+
+    $path = $_SERVER['DOCUMENT_ROOT'] . $localPath;
+    if(! file_exists($path)){
+        mkdir($path);
+    }
+
+    if(is_uploaded_file($_FILES['filename']['tmp_name'])){
+        $res = move_uploaded_file($_FILES['filename']['tmp_name'], $path . $newFileName);
+        return ($res == true) ? $newFileName : false;
+    }
+}
+
+function loadfromxmlAction(){
+    $successUploadFileName = uploadFile('import_products.xml', '/xml/import/');
+
+    if(! $successUploadFileName){
+        echo 'Ошибка загрузки файла';
+        return;
+    }
+
+    $xmlFile = $_SERVER['DOCUMENT_ROOT'].'/xml/import/'.$successUploadFileName;
+    $xmlProducts = simplexml_load_file($xmlFile);
+    $products = array(); $i = 0;
+    foreach($xmlProducts as $product){
+        $products[$i]['name'] = htmlentities($product->name, ENT_QUOTES | ENT_IGNORE, "UTF-8");
+        $products[$i]['category_id'] = intval($product->category_id);
+        $products[$i]['description'] = htmlentities($product->description, ENT_QUOTES | ENT_IGNORE, "UTF-8");
+        $products[$i]['price'] = intval($product->price);
+        $products[$i]['status'] = intval($product->status);
+        $i++;
+    }
+    $res = insertImportProducts($products);
+    if($res){
+        redirect('/admin/products/');
+    }
 }

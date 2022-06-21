@@ -122,3 +122,72 @@ function updateProduct(itemId){
         }
     })
 }
+
+/**
+ * Обновление статуса заказа
+ * @param itemId
+ */
+function updateOrderStatus(itemId){
+    var status = $('#itemStatus_' + itemId).attr('checked');
+    if(! status){
+        status = 0
+    }else{
+        status = 1
+    }
+
+    var postData = {
+        itemId,
+        status
+    };
+
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/admin/setorderstatus/",
+        data: postData,
+        dataType: 'json',
+        success: function (data){
+            if(! data['success']){
+                alert(data['message']);
+            }
+        }
+    })
+}
+
+function updateDatePayment(itemId){
+    var datePayment = $('#datePayment_' + itemId).val();
+    var postData = {
+        itemId,
+        datePayment
+    };
+
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/admin/setorderdatepayment/",
+        data: postData,
+        dataType: 'json',
+        success: function (data){
+            if(! data['success']){
+                alert(data['message']);
+            }
+        }
+    })
+}
+
+function createXML()
+{
+    console.log("onclick");
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/admin/createxml/",
+        dataType: 'html',
+        success: function(data){
+                $('#xml-place').html(data);
+                console.log(data);
+                window.open('http://alumacom/xml/products.xml', '_blank');
+        }
+    });
+}
+
