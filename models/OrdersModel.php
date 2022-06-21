@@ -124,3 +124,26 @@ function getProductsForOrder($orderId)
     $rs = mysqli_query($db, $sql);
     return createSmartyRsArray($rs);
 }
+
+function updateOrderStatus($itemId, $status)
+{
+    $status = intval($status);
+    global $db;
+    $sql = "UPDATE orders
+    SET `status` = '{$status}'
+        WHERE id = '{$itemId}'";
+
+    $rs = mysqli_query($db, $sql);
+    return $rs;
+}
+
+function updateOrderDatePayment($itemId, $datePayment)
+{
+    global $db;
+    $sql = "UPDATE orders
+            SET `date_payment` = '{$datePayment}'
+            WHERE id = '{$itemId}'";
+
+    $rs = mysqli_query($db, $sql);
+    return $rs;
+}

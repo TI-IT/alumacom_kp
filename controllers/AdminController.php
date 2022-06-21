@@ -154,6 +154,24 @@ function ordersAction($smarty){
     loadTemplate($smarty, 'adminHeader');
     loadTemplate($smarty, 'adminOrders');
     loadTemplate($smarty, 'adminFooter');
+}
 
+function setorderstatusAction(){
+    $itemId = $_POST['itemId'];
+    $status = $_POST['status'];
 
+    $res = updateOrderStatus($itemId, $status);
+    $message0 = 'Ошибка установки статуса';
+
+    resDataJsonEncode($res, $message0);
+}
+
+function setorderdatepaymentAction(){
+    $itemId = $_POST['itemId'];
+    $datePayment = $_POST['datePayment'];
+
+    $res = updateOrderDatePayment($itemId, $datePayment);
+    $message0 = 'Ошибка установки статуса';
+
+    resDataJsonEncode($res, $message0);
 }
