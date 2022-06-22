@@ -12,13 +12,13 @@ include_once '../models/PurchaseModel.php';
 $smarty->setTemplateDir(TemplateAdminPrefix);
 $smarty->assign('templateAdminWebPath', TemplateAdminWebPath);
 //d($smarty);
+
 function indexAction($smarty){
-
-
     $rsCategories = getAllMainCategories();
-
+    $rsSpecies = getAllMainSpecies();
 //    d($rsCategories);
     $smarty->assign('rsCategories', $rsCategories);
+    $smarty->assign('rsSpecies', $rsSpecies);
     $smarty->assign('pageTitle', 'Управление сайтом');
 
     loadTemplate($smarty, 'adminHeader');
@@ -37,17 +37,34 @@ function addnewcatAction(){
     resDataJsonEncode($res, $message0, $message1);
 }
 
+function addnewspeciesAction(){
+    $speciesName = $_POST['newSpeciesName'];
+    $speciesParentId = $_POST['generalSpeciesId'];
+
+    $res = insertSpecies($speciesName, $speciesParentId);
+    $message0 = 'ощибка добавления категории';
+    $message1 = 'категория добавлена';
+
+    resDataJsonEncode($res, $message0, $message1);
+}
+
 /**
  * Страница управления категориями
  */
 function categoryAction($smarty){
     $rsCategories = getAllCategories();
     $rsMainCategories = getAllMainCategories();
+    $rsSpecies = getAllSpecies();
+    $rsMainSpecies = getAllMainSpecies();
+
     $smarty->assign('rsCategories', $rsCategories);
     $smarty->assign('rsMainCategories', $rsMainCategories);
+    $smarty->assign('rsSpecies', $rsSpecies);
+    $smarty->assign('rsMainSpecies', $rsMainSpecies);
     $smarty->assign('pageTitle', 'Управление сайтом');
 
     loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminSpecies');
     loadTemplate($smarty, 'adminCategory');
     loadTemplate($smarty, 'adminFooter');
 }
@@ -62,6 +79,22 @@ function updatecategoryAction(){
     $newName = $_POST['newName'];
 
     $res = updateCategoryData($itemId, $parentId, $newName);
+    $message0 = 'Ощибка изменения данных категории';
+    $message1 = 'Категория обнавлена';
+
+    resDataJsonEncode($res, $message0, $message1);
+}
+
+/**
+ * Обновление вида товара
+ * @return void
+ */
+function updatespeciesAction(){
+    $itemId = $_POST['itemId'];
+    $parentId = $_POST['parentId'];
+    $newName = $_POST['newName'];
+
+    $res = updateSpeciesData($itemId, $parentId, $newName);
     $message0 = 'Ощибка изменения данных категории';
     $message1 = 'Категория обнавлена';
 
@@ -94,12 +127,6 @@ function addproductAction(){
     $message1 = 'Добавление успешно внесены';
 
     resDataJsonEncode($res, $message0, $message1);
-}
-//Временное
-function addproductimageAction($smarty){
-    $rsProductsCount = countProducts()[0];
-    $smarty->assign('rsProductsCount', $rsProductsCount);
-    redirect('/admin/products/');
 }
 
 function updateproductAction(){

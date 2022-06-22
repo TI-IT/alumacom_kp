@@ -36,6 +36,29 @@ function newCategory(){
     })
 }
 
+/**\
+ * добавление новой категории
+ */
+function newSpecies(){
+    var postData = getData('#blockNewSpecies');
+
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "/admin/addnewspecies/",
+        data: postData,
+        dataType: "json",
+        success: function(data){
+            if(data['success']){
+                alert(data['message']);
+                $('#newSpeciesName').val('');
+            }else{
+                alert(data['message']);
+            }
+        }
+    })
+}
+
 function updateCat(itemId){
     var parentId = $('#parentId_' + itemId).val();
     var newName = $('#itemName_' + itemId).val();
@@ -44,12 +67,30 @@ function updateCat(itemId){
         parentId,
         newName
     };
-    console.log(postData);
-
     $.ajax({
         type: 'POST',
         async: false,
         url: "/admin/updatecategory/",
+        data: postData,
+        dataType: 'json',
+        success: function (data){
+            alert(data['message']);
+        }
+    })
+}
+
+function updateSpecies(itemId){
+    var parentId = $('#parentId_' + itemId).val();
+    var newName = $('#itemName_' + itemId).val();
+    var postData = {
+        itemId,
+        parentId,
+        newName
+    };
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/admin/updatespecies/",
         data: postData,
         dataType: 'json',
         success: function (data){
