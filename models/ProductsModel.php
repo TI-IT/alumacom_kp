@@ -82,6 +82,10 @@ function getProductsFromArray($itemsIds)
    return createSmartyRsArray($rs); 
 }
 
+/**
+ * GET Products
+ * @return array|false
+ */
 function getProducts()
 {
     global $db;
@@ -92,6 +96,8 @@ function getProducts()
     $rs = mysqli_query($db, $sql);
     return createSmartyRsArray($rs);
 }
+
+
 
 //Добавление продукта
 function insertProduct($itemName, $itemPrice, $itemDesc, $itemCat, $image = 0)

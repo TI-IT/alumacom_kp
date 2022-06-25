@@ -13,7 +13,7 @@ function getData(obj_form){
     return hData;
 };
 
-/**\
+/**
  * добавление новой категории
  */
 function newCategory(){
@@ -29,6 +29,7 @@ function newCategory(){
             if(data['success']){
                 alert(data['message']);
                 $('#newCategoryName').val('');
+                location.reload();
             }else{
                 alert(data['message']);
             }
@@ -36,7 +37,30 @@ function newCategory(){
     })
 }
 
-/**\
+/**
+ * добавление нового материала
+ */
+function newMaterials(){
+    var postData = getData('#blockNewMaterials');
+
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "/admin/addnewmaterial/",
+        data: postData,
+        dataType: "json",
+        success: function(data){
+            if(data['success']){
+                alert(data['message']);
+                $('#newMaterialsName').val('');
+            }else{
+                alert(data['message']);
+            }
+        }
+    })
+}
+
+/**
  * добавление новой категории
  */
 function newSpecies(){
@@ -52,6 +76,53 @@ function newSpecies(){
             if(data['success']){
                 alert(data['message']);
                 $('#newSpeciesName').val('');
+            }else{
+                alert(data['message']);
+            }
+        }
+    })
+}
+
+/**
+ * добавление нового клиента
+ */
+function newSpecies(){
+    var postData = getData('#blockNewSpecies');
+
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "/admin/addnewspecies/",
+        data: postData,
+        dataType: "json",
+        success: function(data){
+            if(data['success']){
+                alert(data['message']);
+                $('#newSpeciesName').val('');
+            }else{
+                alert(data['message']);
+            }
+        }
+    })
+}
+
+/**
+ * добавление нового поставщика
+ */
+function newSuppliers(){
+    var postData = getData('#blockNewSuppliers');
+
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "/admin/addnewsuppliers/",
+        data: postData,
+        dataType: "json",
+        success: function(data){
+            if(data['success']){
+                alert(data['message']);
+                $('#newSpeciesName').val('');
+                location.reload();
             }else{
                 alert(data['message']);
             }
@@ -75,13 +146,35 @@ function updateCat(itemId){
         dataType: 'json',
         success: function (data){
             alert(data['message']);
+            location.reload();
+        }
+    })
+}
+function updateSuppliers(itemId){
+    var categoryId = $('#categoryIdSuppliers_' + itemId).val();
+    var newName = $('#itemNameSuppliers_' + itemId).val();
+    var postData = {
+        itemId,
+        categoryId,
+        newName
+    };
+    console.log(postData);
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/admin/updatesuppliers/",
+        data: postData,
+        dataType: 'json',
+        success: function (data){
+            alert(data['message']);
+            location.reload();
         }
     })
 }
 
 function updateSpecies(itemId){
-    var parentId = $('#parentId_' + itemId).val();
-    var newName = $('#itemName_' + itemId).val();
+    var parentId = $('#parentIdSpe_' + itemId).val();
+    var newName = $('#itemNameSpe_' + itemId).val();
     var postData = {
         itemId,
         parentId,
@@ -95,6 +188,28 @@ function updateSpecies(itemId){
         dataType: 'json',
         success: function (data){
             alert(data['message']);
+            location.reload();
+        }
+    })
+}
+
+function updateMaterials(itemId){
+    var parentId = $('#parentIdMat_' + itemId).val();
+    var newName = $('#itemNameMat_' + itemId).val();
+    var postData = {
+        itemId,
+        parentId,
+        newName
+    };
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/admin/updatematerials/",
+        data: postData,
+        dataType: 'json',
+        success: function (data){
+            alert(data['message']);
+            location.reload();
         }
     })
 }
@@ -160,6 +275,7 @@ function updateProduct(itemId){
         dataType: 'json',
         success: function (data){
             alert(data['message']);
+            location.reload();
         }
     })
 }

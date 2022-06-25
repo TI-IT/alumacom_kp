@@ -8,21 +8,87 @@ include_once '../models/CategoriesModel.php';
 include_once '../models/ProductsModel.php';
 include_once '../models/OrdersModel.php';
 include_once '../models/PurchaseModel.php';
+include_once '../models/ClientsModel.php';
+include_once '../models/MaterialsModel.php';
+include_once '../models/SpeciesModel.php';
+include_once '../models/SuppliersModel.php';
+include_once '../models/PersonsModel.php';
 
 $smarty->setTemplateDir(TemplateAdminPrefix);
 $smarty->assign('templateAdminWebPath', TemplateAdminWebPath);
 //d($smarty);
 
+/**
+ * Страница главная
+ * @param $smarty
+ * @return void
+ */
 function indexAction($smarty){
-    $rsCategories = getAllMainCategories();
-    $rsSpecies = getAllMainSpecies();
-//    d($rsCategories);
-    $smarty->assign('rsCategories', $rsCategories);
-    $smarty->assign('rsSpecies', $rsSpecies);
     $smarty->assign('pageTitle', 'Управление сайтом');
 
     loadTemplate($smarty, 'adminHeader');
     loadTemplate($smarty, 'admin');
+    loadTemplate($smarty, 'adminFooter');
+}
+
+/**
+ * Страница Клиенты
+ * @param $smarty
+ * @return void
+ */
+function clientsAction($smarty){
+    $var = 'Client';
+    $rsClients = getAllClients();
+    $rsMainClients = getAllMainClients();
+
+    $smarty->assign('rsClients', $rsClients);
+    $smarty->assign('rsMainClients', $rsMainClients);
+    $smarty->assign('var', $var);
+    $smarty->assign('pageTitle', 'Управление клиентами');
+
+    loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminClients');
+    loadTemplate($smarty, 'adminFooter');
+}
+
+/**
+ * Страница Физ лицо
+ * @param $smarty
+ * @return void
+ */
+function personsAction($smarty){
+    $rsPersons = getAllPersons();
+
+    $smarty->assign('rsPersons', $rsPersons);
+    $smarty->assign('pageTitle', 'Физ лицо');
+
+    loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminPersons');
+    loadTemplate($smarty, 'adminFooter');
+}
+
+/**
+ * Страница Поставщики
+ * @param $smarty
+ * @return void
+ */
+function suppliersAction($smarty){
+    $rsSuppliers = getAllSuppliers();
+    $rsMainSuppliers = getAllMainSuppliers();
+    $rsMainCategories = getAllMainCategories();
+    $rsCategories = getAllCategories();
+    $rsClients = getAllClients();
+
+    $smarty->assign('rsSuppliers', $rsSuppliers);
+    $smarty->assign('rsMainSuppliers', $rsMainSuppliers);
+    $smarty->assign('rsCategories', $rsCategories);
+    $smarty->assign('rsMainCategories', $rsMainCategories);
+    $smarty->assign('rsClients', $rsClients);
+
+    $smarty->assign('pageTitle', 'Управление клиентами');
+
+    loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminSuppliers');
     loadTemplate($smarty, 'adminFooter');
 }
 
@@ -37,11 +103,27 @@ function addnewcatAction(){
     resDataJsonEncode($res, $message0, $message1);
 }
 
-function addnewspeciesAction(){
-    $speciesName = $_POST['newSpeciesName'];
-    $speciesParentId = $_POST['generalSpeciesId'];
+/**
+ * Добавление поставщика
+ * @return void
+ */
+function addnewsuppliersAction(){
+    $suppliersName = $_POST['newSuppliersName'];
+    $categoryId = $_POST['selectCategoriesSuppliersId'];
+    $client_id = $_POST['selectClientsSuppliersId'];
 
-    $res = insertSpecies($speciesName, $speciesParentId);
+    $res = insertSuppliers($categoryId, $client_id, $suppliersName);
+    $message0 = 'ощибка добавления категории';
+    $message1 = 'категория добавлена';
+
+    resDataJsonEncode($res, $message0, $message1);
+}
+
+function addnewmaterialAction(){
+    $materialName = $_POST['newMaterialsName'];
+    $materialParentId = $_POST['generalMaterials'];
+
+    $res = insertMaterials($materialName, $materialParentId);
     $message0 = 'ощибка добавления категории';
     $message1 = 'категория добавлена';
 
@@ -49,23 +131,28 @@ function addnewspeciesAction(){
 }
 
 /**
- * Страница управления категориями
+ * Страница Категории
  */
 function categoryAction($smarty){
     $rsCategories = getAllCategories();
     $rsMainCategories = getAllMainCategories();
     $rsSpecies = getAllSpecies();
     $rsMainSpecies = getAllMainSpecies();
+    $rsMaterials = getAllMaterials();
+    $rsMainMaterials = getAllMainMaterials();
 
     $smarty->assign('rsCategories', $rsCategories);
     $smarty->assign('rsMainCategories', $rsMainCategories);
     $smarty->assign('rsSpecies', $rsSpecies);
     $smarty->assign('rsMainSpecies', $rsMainSpecies);
+    $smarty->assign('rsMaterials', $rsMaterials);
+    $smarty->assign('rsMainMaterials', $rsMainMaterials);
     $smarty->assign('pageTitle', 'Управление сайтом');
 
     loadTemplate($smarty, 'adminHeader');
     loadTemplate($smarty, 'adminSpecies');
     loadTemplate($smarty, 'adminCategory');
+    loadTemplate($smarty, 'adminMaterials');
     loadTemplate($smarty, 'adminFooter');
 }
 
@@ -79,6 +166,22 @@ function updatecategoryAction(){
     $newName = $_POST['newName'];
 
     $res = updateCategoryData($itemId, $parentId, $newName);
+    $message0 = 'Ощибка изменения данных категории';
+    $message1 = 'Категория обнавлена';
+
+    resDataJsonEncode($res, $message0, $message1);
+}
+
+/**
+ * Обновление Поставщика
+ * @return void
+ */
+function updatesuppliersAction(){
+    $itemId = $_POST['itemId'];
+    $categoryId = $_POST['categoryId'];
+    $newName = $_POST['newName'];
+
+    $res = updateSuppliersData($itemId, $categoryId, $newName);
     $message0 = 'Ощибка изменения данных категории';
     $message1 = 'Категория обнавлена';
 
@@ -101,12 +204,35 @@ function updatespeciesAction(){
     resDataJsonEncode($res, $message0, $message1);
 }
 
+/**
+ * Обновление вида товара
+ * @return void
+ */
+function updatematerialsAction(){
+    $itemId = $_POST['itemId'];
+    $parentId = $_POST['parentId'];
+    $newName = $_POST['newName'];
+
+    $res = updateMaterialsData($itemId, $parentId, $newName);
+    $message0 = 'Ощибка изменения данных категории';
+    $message1 = 'Категория обнавлена';
+
+    resDataJsonEncode($res, $message0, $message1);
+}
+
+/**
+ * Страница работы с Товарами
+ * @param $smarty
+ * @return void
+ */
 function productsAction($smarty){
     $rsCategories = getAllCategories();
     $rsProducts = getProducts();
+    $rsMaterials = getAllMaterials();
 
     $smarty->assign('rsCategories', $rsCategories);
     $smarty->assign('rsProducts', $rsProducts);
+    $smarty->assign('rsMaterials', $rsMaterials);
 
     $smarty->assign('pageTitle', 'Управление сайтом');
 
