@@ -148,7 +148,7 @@ include_once '../models/PurchaseModel.php';
     $smarty->assign('rsProducts', $rsProducts);
      
     loadTemplate($smarty, 'header');
-    loadTemplate($smarty, 'order');
+     loadTemplate($smarty, 'order');
     loadTemplate($smarty, 'footer');
 	
  }

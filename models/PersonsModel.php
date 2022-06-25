@@ -14,6 +14,21 @@ function getAllPersons()
     global $db;
     $sql = "SELECT *
             FROM `persons`
+            ORDER BY id DESC";
+
+    $rs = mysqli_query($db, $sql);
+    return createSmartyRsArray($rs);
+}
+
+/**
+ * GET phone
+ * @return array|false
+ */
+function getAllPhone()
+{
+    global $db;
+    $sql = "SELECT *
+            FROM `phone`
             ORDER BY id";
 
     $rs = mysqli_query($db, $sql);

@@ -6,6 +6,7 @@
             <th>Фамилия</th>
             <th>Имя</th>
             <th>Отчество</th>
+            <th>Телефон</th>
             <th>Дата рождения</th>
             <th>Номер паспорта</th>
             <th>Адрес проживания</th>
@@ -24,6 +25,10 @@
                        style="background-color: darkseagreen">
             </td>
             <td>
+                <input type="tel" id="newPersonPhone" name="newPersonPhone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                       style="background-color: darkseagreen">
+            </td>
+            <td>
                 <input size="30px" type="date" name="newPersonDate_of_birth" id="newPersonDate_of_birth" value=""
                        style="background-color: darkseagreen">
             </td>
@@ -32,7 +37,8 @@
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input size="30px" type="text" name="newPersonResidential_address" id="newPersonResidential_address" value=""
+                <input size="30px" type="text" name="newPersonResidential_address" id="newPersonResidential_address"
+                       value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
@@ -49,10 +55,12 @@
 <div id="blockUpdatePersons">
     <table border="1" cellpadding="1" cellspacing="1">
         <tr>
+            <th>№</th>
             <th>id</th>
             <th>Фамилия</th>
             <th>Имя</th>
             <th>Отчество</th>
+            <th>Телефон</th>
             <th>Дата рождения</th>
             <th>Номер паспорта</th>
             <th>Адрес проживания</th>
@@ -61,6 +69,9 @@
             <tr>
                 <td>
                     {$smarty.foreach.persons.iteration}
+                </td>
+                <td>
+                    {$item['id']}
                 </td>
                 <td>
                     <input size="30px" type="edit" id="itemSurname_{$item['id']}" value="{$item['surname']}"/>
@@ -72,13 +83,25 @@
                     <input size="30px" type="edit" id="itemPatronymic_{$item['id']}" value="{$item['patronymic']}"/>
                 </td>
                 <td>
-                    <input size="30px" type="edit" id="itemDate_of_birth_{$item['id']}" value="{$item['date_of_birth']}"/>
+                    {foreach $rsPhone as $itemPhone}
+                        <div>
+                            {if $item['id'] == $itemPhone['person_id']}
+                                {$itemPhone['phone']}
+                            {/if}
+                        </div>
+                    {/foreach}
                 </td>
                 <td>
-                    <input size="30px" type="edit" id="itemPassport_number_{$item['id']}" value="{$item['passport_number']}"/>
+                    <input size="30px" type="edit" id="itemDate_of_birth_{$item['id']}"
+                           value="{$item['date_of_birth']}"/>
                 </td>
                 <td>
-                    <input size="30px" type="edit" id="itemResidential_address_{$item['id']}" value="{$item['residential_address']}"/>
+                    <input size="30px" type="edit" id="itemPassport_number_{$item['id']}"
+                           value="{$item['passport_number']}"/>
+                </td>
+                <td>
+                    <input size="30px" type="edit" id="itemResidential_address_{$item['id']}"
+                           value="{$item['residential_address']}"/>
                 </td>
                 <td>
                     <input type="button" value="сохранить" onclick="updatePersons({$item['id']});"/>

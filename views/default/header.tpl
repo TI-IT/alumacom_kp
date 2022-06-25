@@ -7,7 +7,7 @@
     </head>    
 <body>
 	<div id="header">
-		<h1>my shop - интернет магазин</h1>
+		<h1>ALUMACOM</h1>
 	</div>
 	
 	

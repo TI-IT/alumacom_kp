@@ -13,6 +13,7 @@ include_once '../models/MaterialsModel.php';
 include_once '../models/SpeciesModel.php';
 include_once '../models/SuppliersModel.php';
 include_once '../models/PersonsModel.php';
+include_once '../models/PhoneModel.php';
 
 $smarty->setTemplateDir(TemplateAdminPrefix);
 $smarty->assign('templateAdminWebPath', TemplateAdminWebPath);
@@ -52,14 +53,36 @@ function clientsAction($smarty){
 }
 
 /**
+ * Страница Клиенты
+ * @param $smarty
+ * @return void
+ */
+function purchaseAction($smarty){
+    $var = 'Client';
+    $rsClients = getAllClients();
+    $rsMainClients = getAllMainClients();
+
+    $smarty->assign('rsClients', $rsClients);
+    $smarty->assign('rsMainClients', $rsMainClients);
+    $smarty->assign('var', $var);
+    $smarty->assign('pageTitle', 'Управление клиентами');
+
+    loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminClients');
+    loadTemplate($smarty, 'adminFooter');
+}
+
+/**
  * Страница Физ лицо
  * @param $smarty
  * @return void
  */
 function personsAction($smarty){
     $rsPersons = getAllPersons();
+    $rsPhone = getAllPhone();
 
     $smarty->assign('rsPersons', $rsPersons);
+    $smarty->assign('rsPhone', $rsPhone);
     $smarty->assign('pageTitle', 'Физ лицо');
 
     loadTemplate($smarty, 'adminHeader');
@@ -97,6 +120,16 @@ function addnewcatAction(){
     $catParentId = $_POST['generalCatId'];
 
     $res = insertCat($catName, $catParentId);
+    $message0 = 'ощибка добавления категории';
+    $message1 = 'категория добавлена';
+
+    resDataJsonEncode($res, $message0, $message1);
+}
+
+function addnewphoneAction(){
+    $newPhone = $_POST['phone'];
+
+    $res = insertPhone($newPhone);
     $message0 = 'ощибка добавления категории';
     $message1 = 'категория добавлена';
 

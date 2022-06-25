@@ -112,7 +112,11 @@ function newSpecies(){
  */
 function newPerson(){
     var postData = getData('#blockNewPersons');
+    var phone = $('#newPersonPhone').val();
 
+    var phoneData = {
+        phone
+    }
     $.ajax({
         type: "POST",
         async: false,
@@ -123,7 +127,24 @@ function newPerson(){
             if(data['success']){
                 alert(data['message']);
                 $('#newSpeciesName').val('');
-                location.reload();
+
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "/admin/addnewphone/",
+                    data: phoneData,
+                    dataType: "json",
+                    success: function(data){
+                        if(data['success']){
+                            $('#newSpeciesName').val('');
+                            location.reload();
+                        }else{
+                            alert(data['message']);
+                        }
+                    }
+                })
+
+                // location.reload();
             }else{
                 alert(data['message']);
             }
@@ -155,6 +176,37 @@ function newSuppliers(){
     })
 }
 
+function addProduct(){
+    var itemName = $('#newItemName').val();
+    var itemPrice = $('#newItemPrice').val();
+    var itemCatId = $('#newItemCatId').val();
+    var itemDesc = $('#newItemDesc').val();
+
+    var postData = {
+        itemName,
+        itemPrice,
+        itemCatId,
+        itemDesc
+    };
+
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/admin/addproduct/",
+        data: postData,
+        dataType: 'json',
+        success: function (data){
+            alert(data['message']);
+            if(data['success']){
+                $('#newItemName').val('');
+                $('#newItemPrice').val('');
+                $('#newItemCatId').val('');
+                $('#newItemDesc').val('');
+            }
+        }
+    })
+}
+
 function updateCat(itemId){
     var parentId = $('#parentId_' + itemId).val();
     var newName = $('#itemName_' + itemId).val();
@@ -170,7 +222,6 @@ function updateCat(itemId){
         data: postData,
         dataType: 'json',
         success: function (data){
-            alert(data['message']);
             location.reload();
         }
     })
@@ -265,37 +316,6 @@ function updateMaterials(itemId){
         success: function (data){
             alert(data['message']);
             location.reload();
-        }
-    })
-}
-
-function addProduct(){
-    var itemName = $('#newItemName').val();
-    var itemPrice = $('#newItemPrice').val();
-    var itemCatId = $('#newItemCatId').val();
-    var itemDesc = $('#newItemDesc').val();
-
-    var postData = {
-        itemName,
-        itemPrice,
-        itemCatId,
-        itemDesc
-    };
-
-    $.ajax({
-        type: 'POST',
-        async: false,
-        url: "/admin/addproduct/",
-        data: postData,
-        dataType: 'json',
-        success: function (data){
-            alert(data['message']);
-            if(data['success']){
-                $('#newItemName').val('');
-                $('#newItemPrice').val('');
-                $('#newItemCatId').val('');
-                $('#newItemDesc').val('');
-            }
         }
     })
 }

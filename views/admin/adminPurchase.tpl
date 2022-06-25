@@ -3,13 +3,18 @@
     <table border="1" cellpadding="1" cellspacing="1">
         <tr>
             <th>№</th>
-            <th>ID</th>
-            <th>Имя</th>
-            <th>Телефон</th>
+            <th>Заказ №</th>
+            <th>Дата создания</th>
+            <th>Клиент</th>
+            <th>Адрес объекта</th>
+            <th>Наименование работ</th>
+            <th>Описание работ</th>
+            <th>Наименование работ</th>
+            <th>Примечание</th>
         </tr>
         <tr>
             <td>
-                <input type="text" name="newClientname" id="newPersonSurname" value=""
+                <input type="text" name="newPersonSurname" id="newPersonSurname" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
