@@ -119,6 +119,25 @@ function addnewsuppliersAction(){
     resDataJsonEncode($res, $message0, $message1);
 }
 
+/**
+ * Добавление Физ лица
+ * @return void
+ */
+function addnewpersonsAction(){
+    $Surname = $_POST['newPersonSurname'];
+    $name = $_POST['newPersonName'];
+    $patronymic = $_POST['newPersonPatronymic'];
+    $date = $_POST['newPersonDate_of_birth'];
+    $passport_number = $_POST['newPersonPassport_number'];
+    $address = $_POST['newPersonResidential_address'];
+
+    $res = insertPerson($Surname, $name, $patronymic, $date, $passport_number, $address);
+    $message0 = 'ощибка добавления категории';
+    $message1 = 'категория добавлена';
+
+    resDataJsonEncode($res, $message0, $message1);
+}
+
 function addnewmaterialAction(){
     $materialName = $_POST['newMaterialsName'];
     $materialParentId = $_POST['generalMaterials'];

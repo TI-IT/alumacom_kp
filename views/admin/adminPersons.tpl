@@ -1,6 +1,6 @@
 <h2>Добавление Физ лица</h2>
 
-<div id="blockNewSuppliers">
+<div id="blockNewPersons">
     <table border="1" cellpadding="1" cellspacing="1">
         <tr>
             <th>Фамилия</th>
@@ -12,31 +12,31 @@
         </tr>
         <tr>
             <td>
-                <input type="text" name="newPersonSurname" id="newPersonSurname" value=""
+                <input size="30px" type="text" name="newPersonSurname" id="newPersonSurname" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input type="text" name="newPersonName" id="newPersonName" value=""
+                <input size="30px" type="text" name="newPersonName" id="newPersonName" value=""
+                       style="background-color: pink">
+            </td>
+            <td>
+                <input size="30px" type="text" name="newPersonPatronymic" id="newPersonPatronymic" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input type="text" name="newPersonDate" id="newPersonPatronymic" value=""
+                <input size="30px" type="date" name="newPersonDate_of_birth" id="newPersonDate_of_birth" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input type="date" name="newPersonDate_of_birth" id="newPersonDate_of_birth" value=""
+                <input size="30px" type="number" name="newPersonPassport_number" id="newPersonPassport_number" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input type="number" name="newPersonPassport_number" id="newPersonPassport_number" value=""
+                <input size="30px" type="text" name="newPersonResidential_address" id="newPersonResidential_address" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input type="text" name="newPersonResidential_address" id="newPersonResidential_address" value=""
-                       style="background-color: darkseagreen">
-            </td>
-            <td>
-                <input type="button" onclick="newPerson();" value="добавить физ лицо"/>
+                <input size="30px" type="button" onclick="newPerson();" value="добавить физ лицо"/>
             </td>
         </tr>
     </table>
@@ -45,48 +45,43 @@
 
 
 <br>
-<h2 style="background-color: red">Изменение поставщика</h2>
-<div id="blockUpdateSuppliers">
+<h2>Изменение Физ лица</h2>
+<div id="blockUpdatePersons">
     <table border="1" cellpadding="1" cellspacing="1">
         <tr>
-            <th>№</th>
-            <th>Товар</th>
-            <th>Название компании</th>
-            <th>Сотрудник</th>
-            <th>Действие</th>
+            <th>id</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Дата рождения</th>
+            <th>Номер паспорта</th>
+            <th>Адрес проживания</th>
         </tr>
-        {foreach $rsSuppliers as $itemSup name=suppliers}
+        {foreach $rsPersons as $item name=persons}
             <tr>
-                <td>{$smarty.foreach.suppliers.iteration}</td>
-                {foreach $rsCategories as $itemcatsup}
-                    {if $itemSup['category_id'] == $itemcatsup['id']}
-                        <td>
-                            <select id="categoriesId_{$itemcatsup['id']}" name="selectCategoriesSuppliersId">
-                                <option value="0">{$itemcatsup['name']}
-                                    {foreach $rsCategories as $itemcat}
-                                <option value="{$itemcat['id']}"
-                                        {if $itemcat['parent_id'] == $itemcat['id']}selected{/if}>
-                                    {$itemcat['name']}</option>
-                                {/foreach}
-                            </select>
-                        </td>
-                    {/if}
-                {/foreach}
                 <td>
-                    <input size="30px" type="edit" id="itemName_{$itemSup['id']}" value="{$itemSup['name']}"/>
+                    {$smarty.foreach.persons.iteration}
                 </td>
                 <td>
-                    <select id="categoryId{$var}_{$itemSup['id']}">
-                        <option value="0">
-                            {foreach $rsCategories as $itemcat}
-                        <option value="{$itemcat['id']}"
-                                {if $itemcat['parent_id'] == $itemcat['id']}selected{/if}>
-                            {$itemcat['name']}</option>
-                        {/foreach}
-                    </select>
+                    <input size="30px" type="edit" id="itemSurname_{$item['id']}" value="{$item['surname']}"/>
                 </td>
                 <td>
-                    <input type="button" value="сохранить" onclick="updateSuppliers({$itemcat['id']});"/>
+                    <input size="30px" type="edit" id="itemName_{$item['id']}" value="{$item['name']}"/>
+                </td>
+                <td>
+                    <input size="30px" type="edit" id="itemPatronymic_{$item['id']}" value="{$item['patronymic']}"/>
+                </td>
+                <td>
+                    <input size="30px" type="edit" id="itemDate_of_birth_{$item['date_of_birth']}" value="{$item['date_of_birth']}"/>
+                </td>
+                <td>
+                    <input size="30px" type="edit" id="itemPassport_number_{$item['passport_number']}" value="{$item['passport_number']}"/>
+                </td>
+                <td>
+                    <input size="30px" type="edit" id="itemResidential_address_{$item['residential_address']}" value="{$item['residential_address']}"/>
+                </td>
+                <td>
+                    <input type="button" value="сохранить" onclick="updateSuppliers({$item['id']});"/>
                 </td>
             </tr>
         {/foreach}

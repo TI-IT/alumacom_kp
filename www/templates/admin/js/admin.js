@@ -99,6 +99,31 @@ function newSpecies(){
             if(data['success']){
                 alert(data['message']);
                 $('#newSpeciesName').val('');
+
+            }else{
+                alert(data['message']);
+            }
+        }
+    })
+}
+
+/**
+ * добавление физ лица
+ */
+function newPerson(){
+    var postData = getData('#blockNewPersons');
+
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "/admin/addnewpersons/",
+        data: postData,
+        dataType: "json",
+        success: function(data){
+            if(data['success']){
+                alert(data['message']);
+                $('#newSpeciesName').val('');
+                location.reload();
             }else{
                 alert(data['message']);
             }
