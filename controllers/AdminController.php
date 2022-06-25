@@ -127,11 +127,11 @@ function addnewpersonsAction(){
     $Surname = $_POST['newPersonSurname'];
     $name = $_POST['newPersonName'];
     $patronymic = $_POST['newPersonPatronymic'];
-    $date = $_POST['newPersonDate_of_birth'];
+    $date_of_birth = $_POST['newPersonDate_of_birth'];
     $passport_number = $_POST['newPersonPassport_number'];
     $address = $_POST['newPersonResidential_address'];
 
-    $res = insertPerson($Surname, $name, $patronymic, $date, $passport_number, $address);
+    $res = insertPerson($name, $Surname, $patronymic, $date_of_birth, $passport_number, $address);
     $message0 = 'ощибка добавления категории';
     $message1 = 'категория добавлена';
 
@@ -201,6 +201,27 @@ function updatesuppliersAction(){
     $newName = $_POST['newName'];
 
     $res = updateSuppliersData($itemId, $categoryId, $newName);
+    $message0 = 'Ощибка изменения данных категории';
+    $message1 = 'Категория обнавлена';
+
+    resDataJsonEncode($res, $message0, $message1);
+}
+
+/**
+ * Обновление Физ лица
+ * @return void
+ */
+function updatepersonsAction(){
+    $itemId = $_POST['itemId'];
+    $Surname = $_POST['Surname'];
+    $name = $_POST['name'];
+    $patronymic = $_POST['patronymic'];
+    $date_of_birth = $_POST['date_of_birth'];
+    $passport_number = $_POST['passport_number'];
+    $address = $_POST['address'];
+
+
+    $res = updatePerson($itemId, $Surname, $name, $patronymic, $date_of_birth, $passport_number, $address);
     $message0 = 'Ощибка изменения данных категории';
     $message1 = 'Категория обнавлена';
 

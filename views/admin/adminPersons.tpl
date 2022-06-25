@@ -28,7 +28,7 @@
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input size="30px" type="number" name="newPersonPassport_number" id="newPersonPassport_number" value=""
+                <input size="30px" type="text" name="newPersonPassport_number" id="newPersonPassport_number" value="0"
                        style="background-color: darkseagreen">
             </td>
             <td>
@@ -72,16 +72,16 @@
                     <input size="30px" type="edit" id="itemPatronymic_{$item['id']}" value="{$item['patronymic']}"/>
                 </td>
                 <td>
-                    <input size="30px" type="edit" id="itemDate_of_birth_{$item['date_of_birth']}" value="{$item['date_of_birth']}"/>
+                    <input size="30px" type="edit" id="itemDate_of_birth_{$item['id']}" value="{$item['date_of_birth']}"/>
                 </td>
                 <td>
-                    <input size="30px" type="edit" id="itemPassport_number_{$item['passport_number']}" value="{$item['passport_number']}"/>
+                    <input size="30px" type="edit" id="itemPassport_number_{$item['id']}" value="{$item['passport_number']}"/>
                 </td>
                 <td>
-                    <input size="30px" type="edit" id="itemResidential_address_{$item['residential_address']}" value="{$item['residential_address']}"/>
+                    <input size="30px" type="edit" id="itemResidential_address_{$item['id']}" value="{$item['residential_address']}"/>
                 </td>
                 <td>
-                    <input type="button" value="сохранить" onclick="updateSuppliers({$item['id']});"/>
+                    <input type="button" value="сохранить" onclick="updatePersons({$item['id']});"/>
                 </td>
             </tr>
         {/foreach}

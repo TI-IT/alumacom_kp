@@ -175,6 +175,7 @@ function updateCat(itemId){
         }
     })
 }
+
 function updateSuppliers(itemId){
     var categoryId = $('#categoryIdSuppliers_' + itemId).val();
     var newName = $('#itemNameSuppliers_' + itemId).val();
@@ -183,11 +184,40 @@ function updateSuppliers(itemId){
         categoryId,
         newName
     };
-    console.log(postData);
     $.ajax({
         type: 'POST',
         async: false,
         url: "/admin/updatesuppliers/",
+        data: postData,
+        dataType: 'json',
+        success: function (data){
+            alert(data['message']);
+            location.reload();
+        }
+    })
+}
+
+function updatePersons(itemId){
+    var Surname = $('#itemSurname_' + itemId).val();
+    var name = $('#itemName_' + itemId).val();
+    var patronymic = $('#itemPatronymic_' + itemId).val();
+    var date_of_birth = $('#itemDate_of_birth_' + itemId).val();
+    var passport_number = $('#itemPassport_number_' + itemId).val();
+    var address = $('#itemResidential_address_' + itemId).val();
+
+    var postData = {
+        itemId,
+        Surname,
+        name,
+        patronymic,
+        date_of_birth,
+        passport_number,
+        address
+    };
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/admin/updatepersons/",
         data: postData,
         dataType: 'json',
         success: function (data){
