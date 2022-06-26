@@ -39,6 +39,19 @@ function indexAction($smarty){
  * @return void
  */
 function companyAction($smarty){
+
+    if( !$_SESSION['apiData']['apiInnData'] ){
+        $rstest = false;
+        $rsSessionCompany = '';
+        $smarty->assign('rsSessionCompany', $rsSessionCompany);
+    }else{
+        $rsSessionCompany = $_SESSION['apiData']['apiInnData'];
+        $rstest = true;
+        $smarty->assign('rsSessionCompany', $rsSessionCompany);
+    }
+
+
+    $smarty->assign('rstest', $rstest);
     $smarty->assign('pageTitle', 'Управление сайтом');
 
     loadTemplate($smarty, 'adminHeader');
@@ -129,6 +142,53 @@ function suppliersAction($smarty){
     loadTemplate($smarty, 'adminFooter');
 }
 
+/**
+ * Страница Категории
+ */
+function categoryAction($smarty){
+    $rsCategories = getAllCategories();
+    $rsMainCategories = getAllMainCategories();
+    $rsSpecies = getAllSpecies();
+    $rsMainSpecies = getAllMainSpecies();
+    $rsMaterials = getAllMaterials();
+    $rsMainMaterials = getAllMainMaterials();
+
+    $smarty->assign('rsCategories', $rsCategories);
+    $smarty->assign('rsMainCategories', $rsMainCategories);
+    $smarty->assign('rsSpecies', $rsSpecies);
+    $smarty->assign('rsMainSpecies', $rsMainSpecies);
+    $smarty->assign('rsMaterials', $rsMaterials);
+    $smarty->assign('rsMainMaterials', $rsMainMaterials);
+    $smarty->assign('pageTitle', 'Управление сайтом');
+
+    loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminSpecies');
+    loadTemplate($smarty, 'adminCategory');
+    loadTemplate($smarty, 'adminMaterials');
+    loadTemplate($smarty, 'adminFooter');
+}
+
+/**
+ * Страница работы с Товарами
+ * @param $smarty
+ * @return void
+ */
+function productsAction($smarty){
+    $rsCategories = getAllCategories();
+    $rsProducts = getProducts();
+    $rsMaterials = getAllMaterials();
+
+    $smarty->assign('rsCategories', $rsCategories);
+    $smarty->assign('rsProducts', $rsProducts);
+    $smarty->assign('rsMaterials', $rsMaterials);
+
+    $smarty->assign('pageTitle', 'Управление сайтом');
+
+    loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminProducts');
+    loadTemplate($smarty, 'adminFooter');
+}
+
 function addnewcatAction(){
     $catName = $_POST['newCategoryName'];
     $catParentId = $_POST['generalCatId'];
@@ -167,6 +227,29 @@ function addnewsuppliersAction(){
 }
 
 /**
+ * Добавление Организации
+ * @return void
+ */
+function addnewcompanyAction(){
+
+    $newNameCompany = $_POST['newNameCompany'];
+    $newOgrn = $_POST['newOgrn'];
+    $newInn = $_POST['newInn'];
+    $newKpp = $_POST['newKpp'];
+    $newAddress = $_POST['newAddress'];
+    $newOkpo = $_POST['newOkpo'];
+    $newOkved = $_POST['newOkved'];
+
+    $res = insertCompany($newNameCompany, $newOgrn,
+        $newInn, $newKpp, $newAddress, $newOkpo, $newOkved );
+
+    $message0 = 'ощибка добавления категории';
+    $message1 = 'категория добавлена';
+
+    resDataJsonEncode($res, $message0, $message1);
+}
+
+/**
  * Добавление Физ лица
  * @return void
  */
@@ -194,32 +277,6 @@ function addnewmaterialAction(){
     $message1 = 'категория добавлена';
 
     resDataJsonEncode($res, $message0, $message1);
-}
-
-/**
- * Страница Категории
- */
-function categoryAction($smarty){
-    $rsCategories = getAllCategories();
-    $rsMainCategories = getAllMainCategories();
-    $rsSpecies = getAllSpecies();
-    $rsMainSpecies = getAllMainSpecies();
-    $rsMaterials = getAllMaterials();
-    $rsMainMaterials = getAllMainMaterials();
-
-    $smarty->assign('rsCategories', $rsCategories);
-    $smarty->assign('rsMainCategories', $rsMainCategories);
-    $smarty->assign('rsSpecies', $rsSpecies);
-    $smarty->assign('rsMainSpecies', $rsMainSpecies);
-    $smarty->assign('rsMaterials', $rsMaterials);
-    $smarty->assign('rsMainMaterials', $rsMainMaterials);
-    $smarty->assign('pageTitle', 'Управление сайтом');
-
-    loadTemplate($smarty, 'adminHeader');
-    loadTemplate($smarty, 'adminSpecies');
-    loadTemplate($smarty, 'adminCategory');
-    loadTemplate($smarty, 'adminMaterials');
-    loadTemplate($smarty, 'adminFooter');
 }
 
 /**
@@ -307,26 +364,6 @@ function updatematerialsAction(){
     resDataJsonEncode($res, $message0, $message1);
 }
 
-/**
- * Страница работы с Товарами
- * @param $smarty
- * @return void
- */
-function productsAction($smarty){
-    $rsCategories = getAllCategories();
-    $rsProducts = getProducts();
-    $rsMaterials = getAllMaterials();
-
-    $smarty->assign('rsCategories', $rsCategories);
-    $smarty->assign('rsProducts', $rsProducts);
-    $smarty->assign('rsMaterials', $rsMaterials);
-
-    $smarty->assign('pageTitle', 'Управление сайтом');
-
-    loadTemplate($smarty, 'adminHeader');
-    loadTemplate($smarty, 'adminProducts');
-    loadTemplate($smarty, 'adminFooter');
-}
 
 function addproductAction(){
     $itemName = $_POST['itemName'];
@@ -400,11 +437,21 @@ function ordersAction($smarty){
 
 //Получение Данных по ИНН
 function getapiinndataAction(){
+
+    $innSession = $_SESSION['apiData']['apiInnData']["suggestions"][0]["data"]['inn'];
     $inn = $_POST['getApiInn'];
 
-    $res = getApiInnData($inn);
-    $message0 = 'ощибка добавления категории';
-    $message1 = 'категория добавлена';
+    $message0 = 'ИНН не корректный';
+
+    //Проверяет на существование ИНН или пустую строку перед проверкой в интернете
+    if($innSession != $inn && $inn != null){
+        $res = getApiInnData($inn);
+        $message0 = 'Ошибка в количестве введенных чисел';
+        $message1 = 'Организация найдена';
+    }
+    if($res['suggestions'][0] == null){
+        $message1 = 'Организация не найдена';
+    }
     resDataJsonEncode($res, $message0, $message1);
 }
 

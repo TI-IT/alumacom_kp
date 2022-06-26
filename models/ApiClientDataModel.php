@@ -159,7 +159,8 @@ class Dadata
 // а переиспользуется существующее.
 
 //Работа с INN
-function testApi(){
+function testApi()
+{
     //"ВАШ_API_КЛЮЧ"
     $token = "6ed04d0cbee8c13ce9babf3711de81a186a1bc1e";
 //"ВАШ_СЕКРЕТНЫЙ_КЛЮЧ"
@@ -189,33 +190,33 @@ function testApi(){
     $result = $dadata->geolocate(55.878, 37.653);
     print_r($result);
 }
+
 //Получить данные по ИНН
-function getApiInnData($inn){
-    if(!$_SESSION['apiData']['apiInnData']){
+function getApiInnData($inn)
+{
+    if (iconv_strlen($inn) >= 10 && iconv_strlen($inn) <= 12) {
         //"ВАШ_API_КЛЮЧ"
         $token = "6ed04d0cbee8c13ce9babf3711de81a186a1bc1e";
-//"ВАШ_СЕКРЕТНЫЙ_КЛЮЧ"
+        //"ВАШ_СЕКРЕТНЫЙ_КЛЮЧ"
         $secret = "bcd93734abcaad0b02503cab5af9a1ea23f26e57";
         $dadata = new Dadata($token, $secret);
         $dadata->init();
 
-// Найти компанию по ИНН
+        // Найти компанию по ИНН
         $fields = array("query" => $inn, "count" => 5);
         $result = $dadata->suggest("party", $fields);
         $_SESSION['apiData']['apiInnData'] = $result;
         $dadata->close();
-        echo 'test';
-    }else{
-        echo '*********--**********';
-        $resData = $_SESSION['apiData']['apiInnData'];
-        $datainn = $resData["suggestions"][0]["data"];
-        print_r($datainn['management']['name']);
+        return $result;
+    } else {
+        return false;
     }
 }
 
 //Получить данные по Банку
-function getApiBankData($inn){
-    if(!$_SESSION['apiData']['apiBankData'] | $_SESSION['apiData']['apiBankData']["suggestions"][0]["data"]['inn'] != $inn){
+function getApiBankData($inn)
+{
+    if (!$_SESSION['apiData']['apiBankData'] | $_SESSION['apiData']['apiBankData']["suggestions"][0]["data"]['inn'] != $inn) {
         //"ВАШ_API_КЛЮЧ"
         $token = "6ed04d0cbee8c13ce9babf3711de81a186a1bc1e";
 //"ВАШ_СЕКРЕТНЫЙ_КЛЮЧ"
@@ -231,7 +232,7 @@ function getApiBankData($inn){
         echo '-------------**-----------';
         $datainn = $_SESSION['apiData']['apiBankData']["suggestions"][0]["data"]['name'];
         print_r($datainn);
-    }else{
+    } else {
         echo '*********--**********';
         $datainn = $_SESSION['apiData']['apiBankData']["suggestions"][0]["data"]['name'];
         print_r($datainn);

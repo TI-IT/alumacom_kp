@@ -38,6 +38,30 @@ function newCategory(){
 }
 
 /**
+ * добавление новой организации
+ */
+function newCompany(){
+    var postData = getData('#blockNewCompany');
+
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "/admin/addnewcompany/",
+        data: postData,
+        dataType: "json",
+        success: function(data){
+            if(data['success']){
+                alert(data['message']);
+                $('#newCategoryName').val('');
+                location.reload();
+            }else{
+                alert(data['message']);
+            }
+        }
+    })
+}
+
+/**
  * добавление нового материала
  */
 function newMaterials(){
@@ -368,8 +392,10 @@ function getApiInnData(){
         success: function(data){
             if(data['success']){
                 alert(data['message']);
+                location.reload();
             }else{
                 alert(data['message']);
+                location.reload();
             }
         }
     })

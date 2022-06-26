@@ -2,12 +2,12 @@
 
 <h3>Заполнить по ИНН</h3>
 <div id="blogGetApiInn">
-    <input type="text" id="getApiInn" name="getApiInn" value="">
-    <input type="button" value="запрос" onclick="getApiInnData();">
+    <input type="number" id="getApiInn" name="getApiInn" value="">
+    <input type="button" value="Найти" onclick="getApiInnData();">
 </div>
 <br>
 
-<div id="blockNewPersons">
+<div id="blockNewCompany">
     <table border="1" cellpadding="1" cellspacing="1">
         <tr>
             <th>Название Организации</th>
@@ -20,57 +20,97 @@
         </tr>
         <tr>
             <td>
-                <input size="30px" type="text" name="newPersonSurname" id="newPersonSurname" value=""
+                <input size="30px" type="text" name="newNameCompany" id="newNameCompany" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input size="30px" type="text" name="newPersonName" id="newPersonName" value=""
+                <input size="30px" type="number" name="newOgrn" id="newOgrn" value=""
                        style="background-color: pink">
             </td>
             <td>
-                <input size="30px" type="text" name="newPersonPatronymic" id="newPersonPatronymic" value=""
+                <input size="30px" type="number" name="newInn" id="newInn" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input type="tel" id="newPersonPhone" name="newPersonPhone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                <input size="30px" type="number" name="newKpp" id="newKpp" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input size="30px" type="date" name="newPersonDate_of_birth" id="newPersonDate_of_birth" value=""
+                <input size="30px" type="text" name="newAddress" id="newAddress" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input size="30px" type="text" name="newPersonPassport_number" id="newPersonPassport_number" value="0"
+                <input size="30px" type="number" name="newOkpo" id="newOkpo" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input size="30px" type="text" name="newPersonResidential_address" id="newPersonResidential_address"
-                       value=""
+                <input size="30px" type="number" name="newOkved" id="newOkved" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input size="30px" type="button" onclick="newPerson();" value="добавить физ лицо"/>
+                <input size="30px" type="button" onclick="newCompany();" value="добавить организацию"/>
             </td>
         </tr>
     </table>
-
 </div>
+
+<br>
+<h3>Найдено</h3>
+{if $rstest}
+    <div id="blockNewCompanySession">
+        <table border="1" cellpadding="1" cellspacing="1">
+            <tr>
+                <th>Название Организации</th>
+                <th>ОГРН</th>
+                <th>ИНН</th>
+                <th>КПП</th>
+                <th>Адрес</th>
+                <th>ОКПО</th>
+                <th>ОКВЕД</th>
+            </tr>
+            <tr>
+                <td>
+                    {$rsSessionCompany['suggestions'][0]['value']}
+                </td>
+                <td>
+                    {$rsSessionCompany['suggestions'][0]['data']['ogrn']}
+                </td>
+                <td>
+                    {$rsSessionCompany['suggestions'][0]['data']['inn']}
+                </td>
+                <td>
+                    {$rsSessionCompany['suggestions'][0]['data']['kpp']}
+                </td>
+                <td>
+                    {$rsSessionCompany['suggestions'][0]['data']['address']['unrestricted_value']}
+                </td>
+                <td>
+                    {$rsSessionCompany['suggestions'][0]['data']['okpo']}
+                </td>
+                <td>
+                    {$rsSessionCompany['suggestions'][0]['data']['okved']}
+                </td>
+                <td>
+                    <input size="30px" type="button" onclick="newCompanySession();" value="добавить организацию"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+{/if}
 
 
 <br>
-<h2>Изменение Физ лица</h2>
+<h2>Изменение Организации</h2>
 <div id="blockUpdatePersons">
     <table border="1" cellpadding="1" cellspacing="1">
         <tr>
-            <th>№</th>
-            <th>id</th>
-            <th>Фамилия</th>
-            <th>Имя</th>
-            <th>Отчество</th>
-            <th>Телефон</th>
-            <th>Дата рождения</th>
-            <th>Номер паспорта</th>
-            <th>Адрес проживания</th>
+            <th>Название Организации</th>
+            <th>ОГРН</th>
+            <th>ИНН</th>
+            <th>КПП</th>
+            <th>Адрес</th>
+            <th>ОКПО</th>
+            <th>ОКВЕД</th>
         </tr>
         {foreach $rsPersons as $item name=persons}
             <tr>
