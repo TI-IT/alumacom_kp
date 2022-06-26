@@ -6,10 +6,8 @@ function getData(obj_form){
     $('input, textarea, select', obj_form).each(function(){
         if(this.name && this.name !=''){
             hData[this.name] = this.value;
-            console.log('hData[' + this.name + '] = ' + hData[this.name]);
         }
     });
-    console.log(hData);
     return hData;
 };
 
@@ -387,6 +385,32 @@ function getApiInnData(){
         type: "POST",
         async: false,
         url: "/admin/getapiinndata/",
+        data: postData,
+        dataType: "json",
+        success: function(data){
+            if(data['success']){
+                alert(data['message']);
+                location.reload();
+            }else{
+                alert(data['message']);
+                location.reload();
+            }
+        }
+    })
+}
+
+//Добавить Организацию по ИНН
+function newCompanySession($inn){
+
+    var postData =
+        {
+            $inn
+        };
+
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "/admin/getapiinnsessiondata/",
         data: postData,
         dataType: "json",
         success: function(data){

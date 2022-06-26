@@ -15,6 +15,7 @@ include_once '../models/SuppliersModel.php';
 include_once '../models/PersonsModel.php';
 include_once '../models/PhoneModel.php';
 include_once '../models/ApiClientDataModel.php';
+include_once '../models/CompanyModel.php';
 
 $smarty->setTemplateDir(TemplateAdminPrefix);
 $smarty->assign('templateAdminWebPath', TemplateAdminWebPath);
@@ -49,8 +50,6 @@ function companyAction($smarty){
         $rstest = true;
         $smarty->assign('rsSessionCompany', $rsSessionCompany);
     }
-
-
     $smarty->assign('rstest', $rstest);
     $smarty->assign('pageTitle', 'Управление сайтом');
 
@@ -239,6 +238,29 @@ function addnewcompanyAction(){
     $newAddress = $_POST['newAddress'];
     $newOkpo = $_POST['newOkpo'];
     $newOkved = $_POST['newOkved'];
+
+    $res = insertCompany($newNameCompany, $newOgrn,
+        $newInn, $newKpp, $newAddress, $newOkpo, $newOkved );
+
+    $message0 = 'ощибка добавления категории';
+    $message1 = 'категория добавлена';
+
+    resDataJsonEncode($res, $message0, $message1);
+}
+
+/**
+ * Добавление Организации из Интернета
+ * @return void
+ */
+function getapiinnsessiondataAction(){
+
+    $newNameCompany = $_SESSION['apiData']['apiInnData']['suggestions'][0]['value'];
+    $newOgrn = (int)$_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['ogrn'];
+    $newInn = (int)$_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['inn'];
+    $newKpp = (int)$_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['kpp'];
+    $newAddress = $_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['address']['unrestricted_value'];
+    $newOkpo = (int)$_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['okpo'];
+    $newOkved = (int)$_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['okved'];
 
     $res = insertCompany($newNameCompany, $newOgrn,
         $newInn, $newKpp, $newAddress, $newOkpo, $newOkved );

@@ -91,7 +91,7 @@
                     {$rsSessionCompany['suggestions'][0]['data']['okved']}
                 </td>
                 <td>
-                    <input size="30px" type="button" onclick="newCompanySession();" value="добавить организацию"/>
+                    <input size="30px" type="button" onclick="newCompanySession({$rsSessionCompany['suggestions'][0]['data']['inn']});" value="добавить организацию"/>
                 </td>
             </tr>
         </table>
