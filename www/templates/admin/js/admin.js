@@ -354,3 +354,43 @@ function updateProduct(itemId){
         }
     })
 }
+
+//Запрос по АПИ
+function getApiInnData(){
+    var postData = getData('#blogGetApiInn');
+
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "/admin/getapiinndata/",
+        data: postData,
+        dataType: "json",
+        success: function(data){
+            if(data['success']){
+                alert(data['message']);
+            }else{
+                alert(data['message']);
+            }
+        }
+    })
+}
+
+//Запрос по АПИ
+function getApiBankData(){
+    var postData = getData('#blogGetApiBank');
+
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "/admin/getapibankdata/",
+        data: postData,
+        dataType: "json",
+        success: function(data){
+            if(data['success']){
+                alert(data['message']);
+            }else{
+                alert(data['message']);
+            }
+        }
+    })
+}

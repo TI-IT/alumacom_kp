@@ -14,6 +14,7 @@ include_once '../models/SpeciesModel.php';
 include_once '../models/SuppliersModel.php';
 include_once '../models/PersonsModel.php';
 include_once '../models/PhoneModel.php';
+include_once '../models/ApiClientDataModel.php';
 
 $smarty->setTemplateDir(TemplateAdminPrefix);
 $smarty->assign('templateAdminWebPath', TemplateAdminWebPath);
@@ -29,6 +30,19 @@ function indexAction($smarty){
 
     loadTemplate($smarty, 'adminHeader');
     loadTemplate($smarty, 'admin');
+    loadTemplate($smarty, 'adminFooter');
+}
+
+/**
+ * Страница Добавления организации
+ * @param $smarty
+ * @return void
+ */
+function companyAction($smarty){
+    $smarty->assign('pageTitle', 'Управление сайтом');
+
+    loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminCompany');
     loadTemplate($smarty, 'adminFooter');
 }
 
@@ -382,4 +396,24 @@ function ordersAction($smarty){
     loadTemplate($smarty, 'adminFooter');
 
 
+}
+
+//Получение Данных по ИНН
+function getapiinndataAction(){
+    $inn = $_POST['getApiInn'];
+
+    $res = getApiInnData($inn);
+    $message0 = 'ощибка добавления категории';
+    $message1 = 'категория добавлена';
+    resDataJsonEncode($res, $message0, $message1);
+}
+
+//Получение Данных по банку
+function getapibankdataAction(){
+    $inn = $_POST['getApiBank'];
+
+    $res = getApiBankData($inn);
+    $message0 = 'ощибка добавления категории';
+    $message1 = 'категория добавлена';
+    resDataJsonEncode($res, $message0, $message1);
 }
