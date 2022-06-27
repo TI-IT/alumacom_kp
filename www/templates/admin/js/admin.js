@@ -248,6 +248,33 @@ function updateCat(itemId){
         }
     })
 }
+function updateCompany(itemId){
+
+    var newNameCompany = $('#parentId_' + itemId).val();
+    var newOgrn = $('#itemName_' + itemId).val();
+    var newInn = $('#itemName_' + itemId).val();
+    var newKpp = $('#itemName_' + itemId).val();
+    var newAddress = $('#itemName_' + itemId).val();
+    var newOkpo = $('#itemName_' + itemId).val();
+    var newOkved = $('#itemName_' + itemId).val();
+
+
+    var postData = {
+        itemId,
+        parentId,
+        newName
+    };
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/admin/updatecompany/",
+        data: postData,
+        dataType: 'json',
+        success: function (data){
+            location.reload();
+        }
+    })
+}
 
 function updateSuppliers(itemId){
     var categoryId = $('#categoryIdSuppliers_' + itemId).val();

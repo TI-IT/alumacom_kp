@@ -1,5 +1,22 @@
 <?php
 
+/**
+ * получить все категории
+ */
+function getAllCompanies()
+{
+    global $db;
+    $sql = 'SELECT *
+            FROM companies
+            ORDER BY `id` DESC';
+
+    $rs = mysqli_query($db, $sql);
+
+    return createSmartyRsArray($rs);
+}
+
+
+
 /***
  * Добавление Организации
  */

@@ -7,6 +7,7 @@
 </div>
 <br>
 
+<h3>Заполнить данные организации</h3>
 <div id="blockNewCompany">
     <table border="1" cellpadding="1" cellspacing="1">
         <tr>
@@ -44,7 +45,7 @@
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input size="30px" type="number" name="newOkved" id="newOkved" value=""
+                <input size="30px" type="еуче" name="newOkved" id="newOkved" value=""
                        style="background-color: darkseagreen">
             </td>
             <td>
@@ -55,8 +56,8 @@
 </div>
 
 <br>
-<h3>Найдено</h3>
-{if $rstest}
+<h3>Найденные организации</h3>
+{if $rsSessionCompany}
     <div id="blockNewCompanySession">
         <table border="1" cellpadding="1" cellspacing="1">
             <tr>
@@ -97,64 +98,59 @@
         </table>
     </div>
 {/if}
-
-
 <br>
-<h2>Изменение Организации</h2>
-<div id="blockUpdatePersons">
-    <table border="1" cellpadding="1" cellspacing="1">
-        <tr>
-            <th>Название Организации</th>
-            <th>ОГРН</th>
-            <th>ИНН</th>
-            <th>КПП</th>
-            <th>Адрес</th>
-            <th>ОКПО</th>
-            <th>ОКВЕД</th>
-        </tr>
-        {foreach $rsPersons as $item name=persons}
+
+{if $rsCompanies}
+    <h2>Изменение Организации</h2>
+    <div id="blockUpdateCompany">
+        <table border="1" cellpadding="1" cellspacing="1">
             <tr>
-                <td>
-                    {$smarty.foreach.persons.iteration}
-                </td>
-                <td>
-                    {$item['id']}
-                </td>
-                <td>
-                    <input size="30px" type="edit" id="itemSurname_{$item['id']}" value="{$item['surname']}"/>
-                </td>
-                <td>
-                    <input size="30px" type="edit" id="itemName_{$item['id']}" value="{$item['name']}"/>
-                </td>
-                <td>
-                    <input size="30px" type="edit" id="itemPatronymic_{$item['id']}" value="{$item['patronymic']}"/>
-                </td>
-                <td>
-                    {foreach $rsPhone as $itemPhone}
-                        <div>
-                            {if $item['id'] == $itemPhone['person_id']}
-                                {$itemPhone['phone']}
-                            {/if}
-                        </div>
-                    {/foreach}
-                </td>
-                <td>
-                    <input size="30px" type="edit" id="itemDate_of_birth_{$item['id']}"
-                           value="{$item['date_of_birth']}"/>
-                </td>
-                <td>
-                    <input size="30px" type="edit" id="itemPassport_number_{$item['id']}"
-                           value="{$item['passport_number']}"/>
-                </td>
-                <td>
-                    <input size="30px" type="edit" id="itemResidential_address_{$item['id']}"
-                           value="{$item['residential_address']}"/>
-                </td>
-                <td>
-                    <input type="button" value="сохранить" onclick="updatePersons({$item['id']});"/>
-                </td>
+                <th>№</th>
+                <th>ID</th>
+                <th>Название Организации</th>
+                <th>ОГРН</th>
+                <th>ИНН</th>
+                <th>КПП</th>
+                <th>Адрес</th>
+                <th>ОКПО</th>
+                <th>ОКВЕД</th>
             </tr>
-        {/foreach}
-    </table>
-</div>
-<hr>
+            {foreach $rsCompanies as $item name=company}
+                <tr>
+                    <td>
+                        {$smarty.foreach.company.iteration}
+                    </td>
+                    <td>
+                        {$item['id']}
+                    </td>
+                    <td>
+                        <input size="30px" type="edit" id="newNameCompany_{$item['id']}" value=""/>
+                        {$item['name_company']}
+                    </td>
+                    <td>
+                        <input size="30px" type="edit" id="newOgrn_{$item['id']}" value="{$item['ogrn']}">
+                    </td>
+                    <td>
+                        <input size="30px" type="edit" name="newInn" id="newInn" value="{$item['inn']}">
+                    </td>
+                    <td>
+                        <input size="30px" type="edit" name="newKpp" id="newKpp" value="{$item['kpp']}">
+                    </td>
+                    <td>
+                        <textarea name="newAddress" id="newAddress" cols="50%" rows="auto">{$item['address']}</textarea>
+                    </td>
+                    <td>
+                        <input size="30px" type="edit" name="newOkpo" id="newOkpo" value="{$item['okpo']}">
+                    </td>
+                    <td>
+                        <input size="30px" type="edit" name="newOkved" id="newOkved" value="{$item['okved_type']}">
+                    </td>
+                    <td>
+                        <input type="button" value="сохранить" onclick="updateCompany({$item['id']});"/>
+                    </td>
+                </tr>
+            {/foreach}
+        </table>
+    </div>
+    <hr>
+{/if}

@@ -35,22 +35,23 @@ function indexAction($smarty){
 }
 
 /**
- * Страница Добавления организации
+ * Страница Организации
  * @param $smarty
  * @return void
  */
 function companyAction($smarty){
+    $rsCompanies = getAllCompanies();
+//    d($rsCompanies);
 
     if( !$_SESSION['apiData']['apiInnData'] ){
-        $rstest = false;
         $rsSessionCompany = '';
         $smarty->assign('rsSessionCompany', $rsSessionCompany);
     }else{
         $rsSessionCompany = $_SESSION['apiData']['apiInnData'];
-        $rstest = true;
         $smarty->assign('rsSessionCompany', $rsSessionCompany);
     }
-    $smarty->assign('rstest', $rstest);
+
+    $smarty->assign('rsCompanies', $rsCompanies);
     $smarty->assign('pageTitle', 'Управление сайтом');
 
     loadTemplate($smarty, 'adminHeader');
@@ -230,7 +231,27 @@ function addnewsuppliersAction(){
  * @return void
  */
 function addnewcompanyAction(){
+    $newNameCompany = $_POST['newNameCompany'];
+    $newOgrn = $_POST['newOgrn'];
+    $newInn = $_POST['newInn'];
+    $newKpp = $_POST['newKpp'];
+    $newAddress = $_POST['newAddress'];
+    $newOkpo = $_POST['newOkpo'];
+    $newOkved = $_POST['newOkved'];
 
+    $res = insertCompany($newNameCompany, $newOgrn,
+        $newInn, $newKpp, $newAddress, $newOkpo, $newOkved );
+
+    $message0 = 'ощибка добавления категории';
+    $message1 = 'категория добавлена';
+
+    resDataJsonEncode($res, $message0, $message1);
+}/**
+ * Добавление Организации
+ * @return void
+ */
+
+function updatecompanyAction(){
     $newNameCompany = $_POST['newNameCompany'];
     $newOgrn = $_POST['newOgrn'];
     $newInn = $_POST['newInn'];
@@ -260,7 +281,7 @@ function getapiinnsessiondataAction(){
     $newKpp = (int)$_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['kpp'];
     $newAddress = $_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['address']['unrestricted_value'];
     $newOkpo = (int)$_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['okpo'];
-    $newOkved = (int)$_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['okved'];
+    $newOkved = $_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['okved'];
 
     $res = insertCompany($newNameCompany, $newOgrn,
         $newInn, $newKpp, $newAddress, $newOkpo, $newOkved );

@@ -8,7 +8,7 @@
         <div class="menuCaption">Меню:</div>
         <a href="/admin/">Главная страница</a><br />
         <a href="/admin/persons/">Добавить Физ лицо</a><br />
-        <a href="/admin/company/">Добавить организацию</a><br />
+        <a href="/admin/company/">Добавить Организацию</a><br />
         <a href="/admin/clients/">Клиенты</a><br />
         <a href="/admin/suppliers/">Поставщики</a><br />
         <a href="/admin/purchase/">Заказы</a><br />
