@@ -41,7 +41,6 @@ function indexAction($smarty){
  */
 function companyAction($smarty){
     $rsCompanies = getAllCompanies();
-//    d($rsCompanies);
 
     if( !$_SESSION['apiData']['apiInnData'] ){
         $rsSessionCompany = '';
@@ -231,18 +230,28 @@ function addnewsuppliersAction(){
  * @return void
  */
 function addnewcompanyAction(){
-    $newNameCompany = $_POST['newNameCompany'];
-    $newOgrn = $_POST['newOgrn'];
-    $newInn = $_POST['newInn'];
-    $newKpp = $_POST['newKpp'];
-    $newAddress = $_POST['newAddress'];
-    $newOkpo = $_POST['newOkpo'];
-    $newOkved = $_POST['newOkved'];
+    if($_POST['newNameCompany'] && $_POST['newInn']){
+        $newNameCompany = $_POST['newNameCompany'];
+        $newOgrn = $_POST['newOgrn'];
+        $newInn = $_POST['newInn'];
+        $newKpp = $_POST['newKpp'];
+        $newAddress = $_POST['newAddress'];
+        $newOkpo = $_POST['newOkpo'];
+        $newOkved = $_POST['newOkved'];
 
-    $res = insertCompany($newNameCompany, $newOgrn,
-        $newInn, $newKpp, $newAddress, $newOkpo, $newOkved );
+        $innCount = (int)iconv_strlen($newInn);
+        if($innCount >=10 && $innCount <13){
+            $res = insertCompany($newNameCompany, $newOgrn,
+                $newInn, $newKpp, $newAddress, $newOkpo, $newOkved );
+            $message0 = 'ощибка добавления категории';
+        }else{
+            $message0 = 'Длинна ИНН не соответствует';
+        }
 
-    $message0 = 'ощибка добавления категории';
+    }else{
+        $message0 = 'Заполните поля название и инн организации';
+    }
+
     $message1 = 'категория добавлена';
 
     resDataJsonEncode($res, $message0, $message1);
@@ -252,19 +261,25 @@ function addnewcompanyAction(){
  */
 
 function updatecompanyAction(){
-    $newNameCompany = $_POST['newNameCompany'];
-    $newOgrn = $_POST['newOgrn'];
-    $newInn = $_POST['newInn'];
-    $newKpp = $_POST['newKpp'];
-    $newAddress = $_POST['newAddress'];
-    $newOkpo = $_POST['newOkpo'];
-    $newOkved = $_POST['newOkved'];
 
-    $res = insertCompany($newNameCompany, $newOgrn,
-        $newInn, $newKpp, $newAddress, $newOkpo, $newOkved );
+    if($_POST['newNameCompany']){
+        $itemId = $_POST['companuItemId'];
+        $newNameCompany = $_POST['newNameCompany'];
+        $newOgrn = $_POST['newOgrn'];
+        $newInn = $_POST['newInn'];
+        $newKpp = $_POST['newKpp'];
+        $newAddress = $_POST['newAddress'];
+        $newOkpo = $_POST['newOkpo'];
+        $newOkved = $_POST['newOkved'];
 
-    $message0 = 'ощибка добавления категории';
-    $message1 = 'категория добавлена';
+        $res = updateCompany($itemId, $newNameCompany, $newOgrn,
+            $newInn, $newKpp, $newAddress, $newOkpo, $newOkved );
+        $message0 = 'ощибка изменения Организации';
+    }else{
+        $message0 = 'Заполните название Организации';
+    }
+
+    $message1 = 'Изменения внесены';
 
     resDataJsonEncode($res, $message0, $message1);
 }
@@ -273,7 +288,7 @@ function updatecompanyAction(){
  * Добавление Организации из Интернета
  * @return void
  */
-function getapiinnsessiondataAction(){
+function addapiinnsessiondataAction(){
 
     $newNameCompany = $_SESSION['apiData']['apiInnData']['suggestions'][0]['value'];
     $newOgrn = (int)$_SESSION['apiData']['apiInnData']['suggestions'][0]['data']['ogrn'];
@@ -289,7 +304,9 @@ function getapiinnsessiondataAction(){
     $message0 = 'ощибка добавления категории';
     $message1 = 'категория добавлена';
 
+    $_SESSION['apiData']['apiInnData'] = '';
     resDataJsonEncode($res, $message0, $message1);
+
 }
 
 /**
@@ -481,21 +498,39 @@ function ordersAction($smarty){
 //Получение Данных по ИНН
 function getapiinndataAction(){
 
-    $innSession = $_SESSION['apiData']['apiInnData']["suggestions"][0]["data"]['inn'];
-    $inn = $_POST['getApiInn'];
-
     $message0 = 'ИНН не корректный';
-
-    //Проверяет на существование ИНН или пустую строку перед проверкой в интернете
-    if($innSession != $inn && $inn != null){
-        $res = getApiInnData($inn);
-        $message0 = 'Ошибка в количестве введенных чисел';
-        $message1 = 'Организация найдена';
+    if($_SESSION['apiData']['apiInnData']){
+        $innSession = $_SESSION['apiData']['apiInnData']["suggestions"][0]["data"]['inn'];
     }
-    if($res['suggestions'][0] == null){
-        $message1 = 'Организация не найдена';
+    $inn = $_POST['getApiInn'];
+    $countInn = (int)iconv_strlen($inn);
+    $innDbTrue = getAllCompaniesInn($inn);
+    $res = false;
+    $innGo = false;
+
+    if(!$inn){
+        $message0 = 'Введите ИНН';
+    }elseif ($innSession == $inn){
+        $message0 = 'ИНН уже найден';
+    }elseif ($innDbTrue){
+        $message0 = 'ИНН в базе существует';
+    }elseif($countInn <10 || $countInn >13){
+        $message0 = 'Ошибка в количестве введенных чисел';
+    }else{
+        $innGo = true;
+    }
+
+    if($innGo){
+        $message1 = 'Организация найдена';
+        $res = getApiInnData($inn);
+        $_SESSION['apiData']['apiInnData'] = $res;
+        if($res['suggestions'][0] == null){
+            $message1 = 'Организация не найдена';
+            $_SESSION['apiData']['apiInnData'] = '';
+        }
     }
     resDataJsonEncode($res, $message0, $message1);
+
 }
 
 //Получение Данных по банку

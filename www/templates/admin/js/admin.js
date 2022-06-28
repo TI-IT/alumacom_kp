@@ -248,21 +248,27 @@ function updateCat(itemId){
         }
     })
 }
-function updateCompany(itemId){
 
-    var newNameCompany = $('#parentId_' + itemId).val();
-    var newOgrn = $('#itemName_' + itemId).val();
-    var newInn = $('#itemName_' + itemId).val();
-    var newKpp = $('#itemName_' + itemId).val();
-    var newAddress = $('#itemName_' + itemId).val();
-    var newOkpo = $('#itemName_' + itemId).val();
-    var newOkved = $('#itemName_' + itemId).val();
+function updateCompany(itemId) {
 
+    var companuItemId = itemId;
+    var newNameCompany = $('#newNameCompany_' + itemId).val();
+    var newOgrn = $('#newOgrn_' + itemId).val();
+    var newInn = $('#newInn_' + itemId).val();
+    var newKpp = $('#newKpp_' + itemId).val();
+    var newAddress = $('#newAddress_' + itemId).val();
+    var newOkpo = $('#newOkpo_' + itemId).val();
+    var newOkved = $('#newOkved_' + itemId).val();
 
     var postData = {
-        itemId,
-        parentId,
-        newName
+        companuItemId,
+        newNameCompany,
+        newOgrn,
+        newInn,
+        newKpp,
+        newAddress,
+        newOkpo,
+        newOkved
     };
     $.ajax({
         type: 'POST',
@@ -270,8 +276,13 @@ function updateCompany(itemId){
         url: "/admin/updatecompany/",
         data: postData,
         dataType: 'json',
-        success: function (data){
-            location.reload();
+        success: function (data) {
+            if (data['success']) {
+                alert(data['message']);
+                location.reload();
+            } else {
+                alert(data['message']);
+            }
         }
     })
 }
@@ -437,7 +448,7 @@ function newCompanySession($inn){
     $.ajax({
         type: "POST",
         async: false,
-        url: "/admin/getapiinnsessiondata/",
+        url: "/admin/addapiinnsessiondata/",
         data: postData,
         dataType: "json",
         success: function(data){
@@ -453,7 +464,7 @@ function newCompanySession($inn){
 }
 
 //Запрос по АПИ
-function getApiBankData(){
+function getApiBankData() {
     var postData = getData('#blogGetApiBank');
 
     $.ajax({
@@ -462,10 +473,10 @@ function getApiBankData(){
         url: "/admin/getapibankdata/",
         data: postData,
         dataType: "json",
-        success: function(data){
-            if(data['success']){
+        success: function (data) {
+            if (data['success']) {
                 alert(data['message']);
-            }else{
+            } else {
                 alert(data['message']);
             }
         }

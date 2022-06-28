@@ -194,23 +194,18 @@ function testApi()
 //Получить данные по ИНН
 function getApiInnData($inn)
 {
-    if (iconv_strlen($inn) >= 10 && iconv_strlen($inn) <= 12) {
         //"ВАШ_API_КЛЮЧ"
-        $token = "6ed04d0cbee8c13ce9babf3711de81a186a1bc1e";
+        $token = "3bb7039badb91152e6f9e5de30d7c809e420ad8f";
         //"ВАШ_СЕКРЕТНЫЙ_КЛЮЧ"
-        $secret = "bcd93734abcaad0b02503cab5af9a1ea23f26e57";
+        $secret = "f5325ff2c0805ad90d212122579ab0696a883e27";
         $dadata = new Dadata($token, $secret);
         $dadata->init();
 
         // Найти компанию по ИНН
         $fields = array("query" => $inn, "count" => 5);
         $result = $dadata->suggest("party", $fields);
-        $_SESSION['apiData']['apiInnData'] = $result;
         $dadata->close();
         return $result;
-    } else {
-        return false;
-    }
 }
 
 //Получить данные по Банку

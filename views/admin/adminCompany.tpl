@@ -124,29 +124,29 @@
                         {$item['id']}
                     </td>
                     <td>
-                        <input size="30px" type="edit" id="newNameCompany_{$item['id']}" value=""/>
+                        <input size="30px" type="edit" name="newNameCompany_{$item['id']}" id="newNameCompany_{$item['id']}" value="" required/>
                         {$item['name_company']}
                     </td>
                     <td>
-                        <input size="30px" type="edit" id="newOgrn_{$item['id']}" value="{$item['ogrn']}">
+                        <input size="30px" type="edit" name="newOgrn_{$item['id']}" id="newOgrn_{$item['id']}" value="{$item['ogrn']}">
                     </td>
                     <td>
-                        <input size="30px" type="edit" name="newInn" id="newInn" value="{$item['inn']}">
+                        <input size="30px" type="edit" name="newInn_{$item['id']}" id="newInn_{$item['id']}" value="{$item['inn']}">
                     </td>
                     <td>
-                        <input size="30px" type="edit" name="newKpp" id="newKpp" value="{$item['kpp']}">
+                        <input size="30px" type="edit" name="newKpp_{$item['id']}" id="newKpp_{$item['id']}" value="{$item['kpp']}">
                     </td>
                     <td>
-                        <textarea name="newAddress" id="newAddress" cols="50%" rows="auto">{$item['address']}</textarea>
+                        <textarea name="newAddress_{$item['id']}" id="newAddress_{$item['id']}" cols="50%" rows="auto">{$item['address']}</textarea>
                     </td>
                     <td>
-                        <input size="30px" type="edit" name="newOkpo" id="newOkpo" value="{$item['okpo']}">
+                        <input size="30px" type="edit" name="newOkpo_{$item['id']}" id="newOkpo_{$item['id']}" value="{$item['okpo']}">
                     </td>
                     <td>
-                        <input size="30px" type="edit" name="newOkved" id="newOkved" value="{$item['okved_type']}">
+                        <input size="30px" type="edit" name="newOkved_{$item['id']}" id="newOkved_{$item['id']}" value="{$item['okved_type']}">
                     </td>
                     <td>
-                        <input type="button" value="сохранить" onclick="updateCompany({$item['id']});"/>
+                        <input type="button" value="Изменить" onclick="updateCompany({$item['id']});"/>
                     </td>
                 </tr>
             {/foreach}
