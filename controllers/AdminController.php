@@ -203,7 +203,7 @@ function addnewphoneAction(){
     $newPhone = $_POST['phone'];
 
     $res = insertPhone($newPhone);
-    $message0 = 'ощибка добавления категории';
+    $message0 = 'ощибка добавления телефона';
     $message1 = 'категория добавлена';
 
     resDataJsonEncode($res, $message0, $message1);
@@ -317,12 +317,12 @@ function addnewpersonsAction(){
     $Surname = $_POST['newPersonSurname'];
     $name = $_POST['newPersonName'];
     $patronymic = $_POST['newPersonPatronymic'];
-    $date_of_birth = $_POST['newPersonDate_of_birth'];
-    $passport_number = $_POST['newPersonPassport_number'];
-    $address = $_POST['newPersonResidential_address'];
+//    $date_of_birth = $_POST['newPersonDate_of_birth'];
+//    $passport_number = $_POST['newPersonPassport_number'];
+//    $address = $_POST['newPersonResidential_address'];
 
-    $res = insertPerson($name, $Surname, $patronymic, $date_of_birth, $passport_number, $address);
-    $message0 = 'ощибка добавления категории';
+    $res = insertPerson($name, $Surname, $patronymic);
+    $message0 = 'ощибка добавления физ лица';
     $message1 = 'категория добавлена';
 
     resDataJsonEncode($res, $message0, $message1);
@@ -386,8 +386,8 @@ function updatepersonsAction(){
 
 
     $res = updatePerson($itemId, $Surname, $name, $patronymic, $date_of_birth, $passport_number, $address);
-    $message0 = 'Ощибка изменения данных категории';
-    $message1 = 'Категория обнавлена';
+    $message0 = 'Ощибка изменения данных физ лица';
+    $message1 = 'Данные физ лица обнавлены';
 
     resDataJsonEncode($res, $message0, $message1);
 }

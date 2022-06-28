@@ -38,13 +38,13 @@ function getAllPhone()
 /***
  * Добавление физ лица
  */
-function insertPerson($name, $Surname, $patronymic, $date_of_birth, $passport_number, $address)
+function insertPerson($name, $Surname, $patronymic)
 {
     global $db;
     //Готовим запрос
     $sql =  "INSERT INTO
-            persons (`surname`, `name`, `patronymic`, `date_of_birth`, `passport_number`, `residential_address`)
-            VALUES ('{$Surname}', '{$name}', '{$patronymic}', '{$date_of_birth}', '{$passport_number}', '{$address}')";
+            persons (`surname`, `name`, `patronymic`)
+            VALUES ('{$Surname}', '{$name}', '{$patronymic}')";
     //Выполняем запрос
     $rs = mysqli_query($db, $sql);
 

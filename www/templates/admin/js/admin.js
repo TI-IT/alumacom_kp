@@ -133,8 +133,22 @@ function newSpecies(){
  * добавление физ лица
  */
 function newPerson(){
+
     var postData = getData('#blockNewPersons');
     var phone = $('#newPersonPhone').val();
+    // var phoneInt = Number(phone);
+    var name = $('#newPersonName').val();
+
+    if(!phone || !name) {
+        alert("Заполните поля Имя и Телефон");
+        return;
+    }
+
+    if(!Number(phone)){
+        alert("Поле Телефон не корректный");
+        $('#newPersonPhone').val('');
+        return;
+    }
 
     var phoneData = {
         phone
@@ -148,7 +162,7 @@ function newPerson(){
         success: function(data){
             if(data['success']){
                 alert(data['message']);
-                $('#newSpeciesName').val('');
+                // $('#newSpeciesName').val('');
 
                 $.ajax({
                     type: "POST",
