@@ -1,8 +1,8 @@
-<h2>клиенты / заказы</h2>
+<h2>Заказы</h2>
 <div id="blockNewClient">
     <table border="1" cellpadding="1" cellspacing="1">
         <tr>
-            <th>№</th>
+            <th>№ Заказа</th>
             <th>ID</th>
             <th>Имя</th>
             <th>Телефон</th>
@@ -33,7 +33,7 @@
                        style="background-color: darkseagreen">
             </td>
             <td>
-                <input size="30px" type="button" onclick="newPerson();" value="добавить физ лицо"/>
+                <input size="30px" type="button" onclick="newOrder();" value="добавить заказ"/>
             </td>
         </tr>
     </table>

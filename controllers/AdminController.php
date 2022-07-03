@@ -84,13 +84,11 @@ function clientsAction($smarty){
  * @return void
  */
 function purchaseAction($smarty){
-    $var = 'Client';
     $rsClients = getAllClients();
     $rsMainClients = getAllMainClients();
 
     $smarty->assign('rsClients', $rsClients);
     $smarty->assign('rsMainClients', $rsMainClients);
-    $smarty->assign('var', $var);
     $smarty->assign('pageTitle', 'Управление клиентами');
 
     loadTemplate($smarty, 'adminHeader');
